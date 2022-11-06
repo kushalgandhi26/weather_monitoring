@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
@@ -41,11 +41,38 @@ import {
 } from "variables/charts.js";
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
+import axios from "axios";
+
 
 
 function Dashboard() {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
+  const [weatherData, setWeatherData] = useState({});
+
+  const [tempData, setTempData] = useState({labels:[],series:[[]]});
+  let chartData = {};
+  const getWeatherData = async() => {
+    const res = await axios.get("https://api.thingspeak.com/channels/1921422/feeds.json?api_key=Q1XO4TCIWK8VBE5I&results=7");
+
+    setWeatherData(res.data.feeds[res.data.feeds.length - 1]);
+    // console.log(res.data);
+    res.data.feeds.forEach(element => {
+      // arr.push(element.field1);
+      setTempData({labels:tempData.labels.push(element.created_at), series:tempData.series[0].push(element.field1)})
+    });
+
+    // setTempData({series:[arr]})
+
+    // console.log(tempData)
+    // chartData = tempData;
+    // console.log(chartData)
+  }
+
+  useEffect(() => {
+    getWeatherData();
+  }, [])
+
   return (
     <>
     <Head>
@@ -59,9 +86,9 @@ function Dashboard() {
               <CardIcon color="warning">
                 <Icon>content_copy</Icon>
               </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
+              <p className={classes.cardCategory}>Temperature</p>
               <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
+                {weatherData.field1} <small>°C</small>
               </h3>
             </CardHeader>
             <CardFooter stats>
@@ -82,8 +109,8 @@ function Dashboard() {
               <CardIcon color="dark">
                 <Store />
               </CardIcon>
-              <p className={classes.cardCategory}>Revenue</p>
-              <h3 className={classes.cardTitle}>$34,245</h3>
+              <p className={classes.cardCategory}>Humidity</p>
+              <h3 className={classes.cardTitle}>{weatherData.field2} <small>%</small></h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -99,8 +126,8 @@ function Dashboard() {
               <CardIcon color="danger">
                 <Icon>info_outline</Icon>
               </CardIcon>
-              <p className={classes.cardCategory}>Fixed Issues</p>
-              <h3 className={classes.cardTitle}>75</h3>
+              <p className={classes.cardCategory}>Air Quality</p>
+              <h3 className={classes.cardTitle}>{weatherData.field3}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -116,8 +143,42 @@ function Dashboard() {
               <CardIcon color="info">
                 <Accessibility />
               </CardIcon>
-              <p className={classes.cardCategory}>Followers</p>
-              <h3 className={classes.cardTitle}>+245</h3>
+              <p className={classes.cardCategory}>Pressure</p>
+              <h3 className={classes.cardTitle}>{weatherData.field4} <small>Pa</small></h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <Update />
+                Just Updated
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={3}>
+          <Card>
+            <CardHeader color="info" stats icon>
+              <CardIcon color="info">
+                <Accessibility />
+              </CardIcon>
+              <p className={classes.cardCategory}>Altitude</p>
+              <h3 className={classes.cardTitle}>{weatherData.field5} <small>m</small></h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <Update />
+                Just Updated
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={3}>
+          <Card>
+            <CardHeader color="info" stats icon>
+              <CardIcon color="info">
+                <Accessibility />
+              </CardIcon>
+              <p className={classes.cardCategory}>Light Intensity</p>
+              <h3 className={classes.cardTitle}>{weatherData.field6} </h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -134,7 +195,7 @@ function Dashboard() {
             <CardHeader color="success">
               <ChartistGraph
                 className="ct-chart"
-                data={dailySalesChart.data}
+                data={{tempData}}
                 type="Line"
                 options={dailySalesChart.options}
                 listener={dailySalesChart.animation}

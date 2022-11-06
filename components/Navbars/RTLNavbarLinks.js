@@ -52,9 +52,9 @@ export default function RTLNavbarLinks() {
             },
           }}
         />
-        <Button color="white" aria-label="edit" justIcon round>
+        {/* <Button color="white" aria-label="edit" justIcon round>
           <Search />
-        </Button>
+        </Button> */}
       </div>
       <Button
         color={size.width > 959 ? "transparent" : "white"}
