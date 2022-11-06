@@ -80,18 +80,18 @@ function TableList() {
               <Table className={classes.table}>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell align="right">Temperature</TableCell>
-                    <TableCell align="right">Humidity</TableCell>
+                    <TableCell>Date (MM/DD/YYYY)</TableCell>
+                    <TableCell align="right">Temperature (°C)</TableCell>
+                    <TableCell align="right">Humidity (%)</TableCell>
                     <TableCell align="right">Air Quality</TableCell>
-                    <TableCell align="right">Pressure</TableCell>
-                    <TableCell align="right">Altitude</TableCell>
-                    <TableCell align="right">Light Intensity</TableCell>
+                    <TableCell align="right">Pressure (Pa)</TableCell>
+                    <TableCell align="right">Altitude (m)</TableCell>
+                    <TableCell align="right">Light Intensity (%)</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {weatherData.map(row => (
-                    <TableRow key={row.id}>
+                  {weatherData.slice().reverse().map(row => (
+                    <TableRow key={row.entry_id}>
                       <TableCell align="left">{new Date(row.created_at).toLocaleString(undefined, { timeZone: "Asia/Kolkata" })}</TableCell>
                       <TableCell align="right">{row.field1}</TableCell>
                       <TableCell align="right">{row.field2}</TableCell>
