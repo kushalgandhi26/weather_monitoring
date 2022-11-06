@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import Head from "next/head";
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
@@ -41,10 +42,15 @@ import {
 
 import styles from "assets/jss/nextjs-material-dashboard/views/dashboardStyle.js";
 
+
 function Dashboard() {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   return (
+    <>
+    <Head>
+      <title>Dashboard | Weather Monitoring</title>
+    </Head>
     <div>
       <GridContainer>
         <GridItem xs={12} sm={6} md={3}>
@@ -196,7 +202,7 @@ function Dashboard() {
           </Card>
         </GridItem>
       </GridContainer>
-      <GridContainer>
+      {/* <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
           <CustomTabs
             title="Tasks:"
@@ -260,8 +266,9 @@ function Dashboard() {
             </CardBody>
           </Card>
         </GridItem>
-      </GridContainer>
+      </GridContainer> */}
     </div>
+    </>
   );
 }
 

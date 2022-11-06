@@ -10,6 +10,7 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import Head from "next/head";
 
 const styles = {
   cardCategoryWhite: {
@@ -45,6 +46,10 @@ function TableList() {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   return (
+    <>
+    <Head>
+      <title>History | Weather Monitoring</title>
+    </Head>
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
@@ -109,6 +114,7 @@ function TableList() {
         </Card>
       </GridItem>
     </GridContainer>
+    </>
   );
 }
 
