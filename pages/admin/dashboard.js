@@ -88,9 +88,9 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    // const intervalCall = setInterval(() => {
+    const intervalCall = setInterval(() => {
     getWeatherData();
-    // }, 30000);
+    }, 30000);
   }, [])
 
   return (
