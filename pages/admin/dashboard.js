@@ -39,6 +39,11 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
+import Button from '@material-ui/core/Button';
+
 
 import { bugs, website, server } from "variables/general.js";
 
@@ -57,18 +62,23 @@ function Dashboard() {
   const useStyles = makeStyles(styles);
   const classes = useStyles();
   const [weatherData, setWeatherData] = useState({});
+  const [liveStatus, setLiveStatus] = useState(false);
 
-  const [tempData, setTempData] = useState({ labels: [], series: [[]] });
+  const handleLiveStatus = () => {
+    setLiveStatus(!liveStatus);
+  }
+
+  // const [tempData, setTempData] = useState({ labels: [], series: [[]] });
   let chartData = {};
   const getWeatherData = async () => {
     const res = await axios.get("https://api.thingspeak.com/channels/1921422/feeds.json?api_key=Q1XO4TCIWK8VBE5I&results=7");
 
     setWeatherData(res.data.feeds[res.data.feeds.length - 1]);
     // console.log(res.data);
-    res.data.feeds.forEach(element => {
-      // arr.push(element.field1);
-      setTempData({ labels: tempData.labels.push(element.created_at), series: tempData.series[0].push(element.field1) })
-    });
+    // res.data.feeds.forEach(element => {
+    //   // arr.push(element.field1);
+    //   setTempData({ labels: tempData.labels.push(element.created_at), series: tempData.series[0].push(element.field1) })
+    // });
 
     // setTempData({series:[arr]})
 
@@ -78,7 +88,9 @@ function Dashboard() {
   }
 
   useEffect(() => {
+    // const intervalCall = setInterval(() => {
     getWeatherData();
+    // }, 30000);
   }, [])
 
   return (
@@ -87,6 +99,26 @@ function Dashboard() {
         <title>Dashboard | Weather Monitoring</title>
       </Head>
       <div>
+        <div style={{ textAlign: "end" }}>
+          <a href="https://thingspeak.com/channels/1921422/private_show" target="_blank">
+            <Button variant="contained" color="primary">
+              Data Visualization
+            </Button>
+          </a>
+        </div>
+        {/* <div >
+          <FormControlLabel
+            control={
+              <Switch
+                checked={liveStatus}
+                onChange={handleLiveStatus}
+                name="checkedB"
+                color="primary"
+              />
+            }
+            label="Live Status"
+          />
+        </div> */}
         <GridContainer>
           <GridItem xs={12} sm={6} md={3}>
             <Card>
@@ -100,12 +132,18 @@ function Dashboard() {
                 </h3>
               </CardHeader>
               <CardFooter stats>
-                <div className={classes.stats}>
+                {Number(weatherData.field1) <= 13 && <div className={classes.stats}>
                   <InfoIcon />
-                  <div>
-                    Get more space
-                  </div>
-                </div>
+                  Cool
+                </div>}
+                {(Number(weatherData.field1) > 21 && Number(weatherData.field1) <= 29) && <div className={classes.stats}>
+                  <InfoIcon />
+                  Warm
+                </div>}
+                {Number(weatherData.field1) > 29 && <div className={classes.stats}>
+                  <InfoIcon />
+                  Hot
+                </div>}
               </CardFooter>
             </Card>
           </GridItem>
@@ -119,10 +157,18 @@ function Dashboard() {
                 <h3 className={classes.cardTitle}>{weatherData.field2} <small>%</small></h3>
               </CardHeader>
               <CardFooter stats>
-                <div className={classes.stats}>
-                  <DateRange />
-                  Last 24 Hours
-                </div>
+                {Number(weatherData.field2) <= 20 && <div className={classes.stats}>
+                  <InfoIcon />
+                  Normal
+                </div>}
+                {(Number(weatherData.field2) > 20 && Number(weatherData.field2) <= 50) && <div className={classes.stats}>
+                  <InfoIcon />
+                  Humid
+                </div>}
+                {Number(weatherData.field2) > 50 && <div className={classes.stats}>
+                  <InfoIcon />
+                  Very Humid
+                </div>}
               </CardFooter>
             </Card>
           </GridItem>
@@ -133,13 +179,21 @@ function Dashboard() {
                   <WavesIcon />
                 </CardIcon>
                 <p className={classes.cardCategory}>Air Quality</p>
-                <h3 className={classes.cardTitle}>{weatherData.field3}</h3>
+                <h3 className={classes.cardTitle}>{weatherData.field3} <small>AQI</small></h3>
               </CardHeader>
               <CardFooter stats>
-                <div className={classes.stats}>
-                  <LocalOffer />
-                  Tracked from Github
-                </div>
+                {Number(weatherData.field3) <= 180 && <div className={classes.stats}>
+                  <InfoIcon />
+                  Good!
+                </div>}
+                {(Number(weatherData.field3) > 180 && Number(weatherData.field3) <= 300) && <div className={classes.stats}>
+                  <InfoIcon />
+                  Poor
+                </div>}
+                {Number(weatherData.field3) > 300 && <div className={classes.stats}>
+                  <InfoIcon />
+                  Very bad
+                </div>}
               </CardFooter>
             </Card>
           </GridItem>
@@ -153,9 +207,21 @@ function Dashboard() {
                 <h3 className={classes.cardTitle}>{weatherData.field4} <small>Pa</small></h3>
               </CardHeader>
               <CardFooter stats>
+                {/* {Number(weatherData.field3) <= 180 && <div className={classes.stats}>
+                  <InfoIcon />
+                  Good!
+                </div>}
+                {(Number(weatherData.field3) > 180 && Number(weatherData.field3) <= 300) && <div className={classes.stats}>
+                  <InfoIcon />
+                  Poor
+                </div>}
+                {Number(weatherData.field3) > 300 && <div className={classes.stats}>
+                  <InfoIcon />
+                  Very bad
+                </div>} */}
                 <div className={classes.stats}>
-                  <Update />
-                  Just Updated
+                  <InfoIcon />
+                  Normal
                 </div>
               </CardFooter>
             </Card>
@@ -170,9 +236,21 @@ function Dashboard() {
                 <h3 className={classes.cardTitle}>{weatherData.field5} <small>m</small></h3>
               </CardHeader>
               <CardFooter stats>
+                {/* {Number(weatherData.field3) <= 180 && <div className={classes.stats}>
+                  <InfoIcon />
+                  Good!
+                </div>}
+                {(Number(weatherData.field3) > 180 && Number(weatherData.field3) <= 300) && <div className={classes.stats}>
+                  <InfoIcon />
+                  Poor
+                </div>}
+                {Number(weatherData.field3) > 300 && <div className={classes.stats}>
+                  <InfoIcon />
+                  Very bad
+                </div>} */}
                 <div className={classes.stats}>
-                  <Update />
-                  Just Updated
+                  <InfoIcon />
+                  Normal
                 </div>
               </CardFooter>
             </Card>
@@ -187,21 +265,30 @@ function Dashboard() {
                 <h3 className={classes.cardTitle}>{weatherData.field6} <span>%</span></h3>
               </CardHeader>
               <CardFooter stats>
-                <div className={classes.stats}>
-                  <Update />
-                  Just Updated
-                </div>
+                {Number(weatherData.field6) <= 180 && <div className={classes.stats}>
+                  <InfoIcon />
+                  Normal
+                </div>}
+                {(Number(weatherData.field6) > 180 && Number(weatherData.field6) <= 300) && <div className={classes.stats}>
+                  <InfoIcon />
+                  Normal
+                </div>}
+                {Number(weatherData.field6) > 300 && <div className={classes.stats}>
+                  <InfoIcon />
+                  Normal
+                </div>}
               </CardFooter>
             </Card>
           </GridItem>
         </GridContainer>
-        <GridContainer>
+
+        {/* <GridContainer>
           <GridItem xs={12} sm={12} md={4}>
             <Card chart>
               <CardHeader color="success">
                 <ChartistGraph
                   className="ct-chart"
-                  data={{ tempData }}
+                  data={dailySalesChart.data}
                   type="Line"
                   options={dailySalesChart.options}
                   listener={dailySalesChart.animation}
@@ -268,7 +355,8 @@ function Dashboard() {
               </CardFooter>
             </Card>
           </GridItem>
-        </GridContainer>
+        </GridContainer> */}
+
         {/* <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
           <CustomTabs

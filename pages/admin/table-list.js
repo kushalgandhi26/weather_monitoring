@@ -85,7 +85,7 @@ function TableList() {
                       <TableCell>Date (MM/DD/YYYY)</TableCell>
                       <TableCell align="right">Temperature (°C)</TableCell>
                       <TableCell align="right">Humidity (%)</TableCell>
-                      <TableCell align="right">Air Quality</TableCell>
+                      <TableCell align="right">Air Quality (AQI)</TableCell>
                       <TableCell align="right">Pressure (Pa)</TableCell>
                       <TableCell align="right">Altitude (m)</TableCell>
                       <TableCell align="right">Light Intensity (%)</TableCell>
