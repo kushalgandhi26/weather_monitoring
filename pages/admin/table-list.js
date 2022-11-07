@@ -16,6 +16,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
+import TableContainer from '@material-ui/core/TableContainer';
 
 const styles = {
   cardCategoryWhite: {
@@ -77,32 +78,34 @@ function TableList() {
               </p>
             </CardHeader>
             <CardBody>
-              <Table className={classes.table}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Date (MM/DD/YYYY)</TableCell>
-                    <TableCell align="right">Temperature (°C)</TableCell>
-                    <TableCell align="right">Humidity (%)</TableCell>
-                    <TableCell align="right">Air Quality</TableCell>
-                    <TableCell align="right">Pressure (Pa)</TableCell>
-                    <TableCell align="right">Altitude (m)</TableCell>
-                    <TableCell align="right">Light Intensity (%)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {weatherData.slice().reverse().map(row => (
-                    <TableRow key={row.entry_id}>
-                      <TableCell align="left">{new Date(row.created_at).toLocaleString(undefined, { timeZone: "Asia/Kolkata" })}</TableCell>
-                      <TableCell align="right">{row.field1}</TableCell>
-                      <TableCell align="right">{row.field2}</TableCell>
-                      <TableCell align="right">{row.field3}</TableCell>
-                      <TableCell align="right">{row.field4}</TableCell>
-                      <TableCell align="right">{row.field5}</TableCell>
-                      <TableCell align="right">{row.field6}</TableCell>
+              <TableContainer>
+                <Table className={classes.table}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Date (MM/DD/YYYY)</TableCell>
+                      <TableCell align="right">Temperature (°C)</TableCell>
+                      <TableCell align="right">Humidity (%)</TableCell>
+                      <TableCell align="right">Air Quality</TableCell>
+                      <TableCell align="right">Pressure (Pa)</TableCell>
+                      <TableCell align="right">Altitude (m)</TableCell>
+                      <TableCell align="right">Light Intensity (%)</TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHead>
+                  <TableBody>
+                    {weatherData.slice().reverse().map(row => (
+                      <TableRow key={row.entry_id}>
+                        <TableCell align="left">{new Date(row.created_at).toLocaleString(undefined, { timeZone: "Asia/Kolkata" })}</TableCell>
+                        <TableCell align="right">{row.field1}</TableCell>
+                        <TableCell align="right">{row.field2}</TableCell>
+                        <TableCell align="right">{row.field3}</TableCell>
+                        <TableCell align="right">{row.field4}</TableCell>
+                        <TableCell align="right">{row.field5}</TableCell>
+                        <TableCell align="right">{row.field6}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </CardBody>
           </Card>
         </GridItem>
