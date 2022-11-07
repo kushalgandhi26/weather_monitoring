@@ -179,7 +179,7 @@ function Dashboard() {
                   <WavesIcon />
                 </CardIcon>
                 <p className={classes.cardCategory}>Air Quality</p>
-                <h3 className={classes.cardTitle}>{weatherData.field3} <small>AQI</small></h3>
+                <h3 className={classes.cardTitle}>{weatherData.field3} <small>PPM</small></h3>
               </CardHeader>
               <CardFooter stats>
                 {Number(weatherData.field3) <= 180 && <div className={classes.stats}>
@@ -262,7 +262,7 @@ function Dashboard() {
                   <WbSunnyIcon />
                 </CardIcon>
                 <p className={classes.cardCategory}>Light Intensity</p>
-                <h3 className={classes.cardTitle}>{weatherData.field6} <span>%</span></h3>
+                <h3 className={classes.cardTitle}>{Math.floor(Number(weatherData.field6))} <span>lux</span></h3>
               </CardHeader>
               <CardFooter stats>
                 {Number(weatherData.field6) <= 180 && <div className={classes.stats}>
