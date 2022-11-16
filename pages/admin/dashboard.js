@@ -46,7 +46,7 @@ function Dashboard() {
     getWeatherData();
     const intervalCall = setInterval(() => {
       getWeatherData();
-    }, 30000);
+    }, 5000);
   }, [])
 
   return (
